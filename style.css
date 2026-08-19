@@ -1,0 +1,541 @@
+:root {
+  --bg-dark: #0f1319;
+  --bg-poster: #1a222d;
+  --text-primary: #ffffff;
+  --text-secondary: #9aa5b5;
+  --nike-blue: #295280;
+  --nike-accent: #4388cc;
+  --nike-white: #f5f6f8;
+  --font-headline: 'Montserrat', sans-serif;
+  --font-condensed: 'Bebas Neue', sans-serif;
+  --font-script: 'Caveat', cursive;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-dark);
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 1. Header Minimalista Nike */
+.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 1.2rem 3rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(15, 19, 25, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: #fff;
+}
+
+.swoosh-icon {
+  width: 44px;
+  height: auto;
+  display: block;
+  filter: brightness(0) invert(1); /* Convierte el SVG negro a blanco puro */
+}
+
+.logo-text {
+  font-family: var(--font-headline);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.45rem;
+  letter-spacing: -0.5px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.2rem;
+}
+
+.nav-item {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.nav-item:hover {
+  color: #fff;
+}
+
+.nav-btn {
+  padding: 0.6rem 1.4rem;
+  background: #fff;
+  color: #0f1319;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+  background: var(--nike-accent);
+  color: #fff;
+}
+
+/* 2. Preloader Nike */
+.loader-container {
+  position: fixed;
+  inset: 0;
+  background: #0f1319;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+
+.loader-container.loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-content {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+.loader-icon-img {
+  width: 70px;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+
+@keyframes pulse-swoosh {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+.loader-progress-track {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.loader-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: #fff;
+  transition: width 0.1s ease-out;
+}
+
+.loader-status {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+}
+
+/* 3. Hero Sticky Wrapper */
+.hero-scroll-wrapper {
+  position: relative;
+  width: 100%;
+  height: 400vh;
+}
+
+.sticky-viewport {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 10;
+  background: radial-gradient(circle at 65% 50%, #1e293b 0%, #0f1319 80%);
+}
+
+/* Letras Gigantes de Fondo estilo Poster Nike */
+.giant-bg-text {
+  position: absolute;
+  top: 50%;
+  right: -2vw;
+  transform: translateY(-50%);
+  font-family: var(--font-headline);
+  font-weight: 900;
+  font-size: clamp(14rem, 28vw, 36rem);
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.08);
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
+  letter-spacing: -1vw;
+}
+
+#frameCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  display: block;
+}
+
+.cinematic-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(15, 19, 25, 0.85) 0%, rgba(15, 19, 25, 0.3) 50%, rgba(15, 19, 25, 0.7) 100%);
+}
+
+/* Badge esquina "2026 NEW DROP" estilo Aura */
+.corner-drop-badge {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 3.5rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #fff;
+  pointer-events: none;
+}
+
+.drop-year {
+  line-height: 1;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.drop-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.drop-text {
+  line-height: 1.2;
+}
+
+/* Slogan Sticker "Just do it." estilo Poster Azul */
+.just-do-it-badge {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 5vw;
+  z-index: 5;
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f1319;
+  padding: 0.4rem 1.4rem;
+  border-radius: 999px;
+  font-family: var(--font-headline);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.35rem;
+  letter-spacing: -0.5px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+/* 4. Etapas de Texto Dinámicas */
+.hero-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  padding: 0 5vw;
+}
+
+.stage-step {
+  position: absolute;
+  left: 5vw;
+  right: 5vw;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  display: flex;
+}
+
+.stage-step.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.stage-step .right-align {
+  margin-left: auto;
+  text-align: right;
+}
+
+/* Bloque Editorial Poster Nike */
+.nike-editorial-block {
+  max-width: 520px;
+}
+
+.kicker-tag {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #fff;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+/* Tipografía Script Manuscrita "Air Force" */
+.script-accent {
+  font-family: var(--font-script);
+  font-size: 2.8rem;
+  line-height: 1;
+  color: #ffffff;
+  transform: rotate(-4deg);
+  display: inline-block;
+  margin-bottom: -0.5rem;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.poster-headline {
+  font-family: var(--font-headline);
+  font-weight: 900;
+  font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+  line-height: 0.92;
+  letter-spacing: -1.5px;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.poster-headline .sub-headline {
+  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+  font-weight: 800;
+  color: var(--text-secondary);
+  letter-spacing: 0px;
+  display: block;
+}
+
+.concept-triplet {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--nike-accent);
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+}
+
+.poster-desc {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-bottom: 2rem;
+}
+
+.poster-desc.centered {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 2.5rem auto;
+}
+
+/* Botón Sólido estilo Nike "STEP INTO THE FUTURE" */
+.nike-solid-btn {
+  display: inline-block;
+  padding: 1rem 2.2rem;
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  transition: all 0.25s ease;
+}
+
+.nike-solid-btn:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.nike-solid-btn.large {
+  padding: 1.2rem 3rem;
+  font-size: 0.9rem;
+}
+
+/* 5. SECCIÓN INFERIOR: BARRA DE PILARES Y CTA */
+.page-content {
+  position: relative;
+  z-index: 20;
+  background: #0f1319;
+  padding: 5rem 6vw 8rem 6vw;
+  box-shadow: 0 -40px 80px rgba(15, 19, 25, 0.95);
+}
+
+/* 4 Columnas de Pilares estilo Aura */
+.features-bar {
+  max-width: 1300px;
+  margin: 0 auto 6rem auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2.5rem;
+  padding-bottom: 5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-col {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.feature-icon {
+  color: var(--nike-accent);
+}
+
+.feature-col h4 {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.feature-col p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* Cierre / Call to Action */
+.nike-cta-section {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.poster-headline.large {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-top: 0.5rem;
+}
+
+/* Footer */
+.main-footer {
+  position: relative;
+  z-index: 20;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: #0a0d11;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-icon-img {
+  width: 52px;
+  height: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+
+.footer-brand p {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-header {
+    padding: 1rem 1.5rem;
+  }
+  .nav-links .nav-item {
+    display: none;
+  }
+  .giant-bg-text {
+    font-size: 28vw;
+    right: -10vw;
+  }
+  .corner-drop-badge {
+    display: none;
+  }
+  .just-do-it-badge {
+    bottom: 1.5rem;
+    left: 1.5rem;
+  }
+  .hero-stage {
+    padding: 0 1.5rem;
+  }
+  .stage-step {
+    left: 1.5rem;
+    right: 1.5rem;
+  }
+  .poster-headline {
+    font-size: 2.5rem;
+  }
+  .script-accent {
+    font-size: 2.2rem;
+  }
+}

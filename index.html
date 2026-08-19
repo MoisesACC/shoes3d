@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NIKE AIR DUNK RETRO — Colección 2026</title>
+  <meta name="description" content="Edición limitada Nike Dunk Retro 2026. Minimalista, limpio, icónico. Experiencia interactiva basada en scroll." />
+  
+  <!-- Tipografías Oficiales de Estilo Nike: Bebas Neue / Montserrat Black / Caveat / Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:ital,wght@0,800;0,900;1,900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Barra de Navegación Nike Minimalista -->
+  <header class="main-header">
+    <div class="nav-container">
+      <div class="logo">
+        <img src="img/nike.svg" alt="Nike Logo" class="swoosh-icon" />
+        <span class="logo-text">NIKE</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#sec-overview" class="nav-item">Colección</a>
+        <a href="#sec-craft" class="nav-item">Historia</a>
+        <a href="#sec-specs" class="nav-item">Detalles</a>
+        <a href="#sec-cta" class="nav-btn">Comprar Ahora</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Preloader de Precarga con Progreso -->
+  <div id="loader" class="loader-container">
+    <div class="loader-content">
+      <div class="loader-swoosh">
+        <img src="img/nike.svg" alt="Nike" class="loader-icon-img" />
+      </div>
+      <div class="loader-progress-track">
+        <div id="loader-bar" class="loader-progress-fill"></div>
+      </div>
+      <div class="loader-status">
+        <span class="status-label">JUST DO IT.</span>
+        <span id="loader-progress">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN HERO INTERACTIVA CON SECUENCIA PINNED/STICKY -->
+  <div class="hero-scroll-wrapper" id="heroScrollWrapper">
+    <div class="sticky-viewport">
+      
+      <!-- Letras Gigantes de Fondo Tipográfico estilo Póster Poster/Aura -->
+      <div class="giant-bg-text">NIKE</div>
+
+      <!-- Canvas de los 100 Frames WebP -->
+      <canvas id="frameCanvas"></canvas>
+      
+      <!-- Overlay Cinemático Gradiente Suave -->
+      <div class="cinematic-overlay"></div>
+
+      <!-- Badge "2026 NEW DROP" en esquina inferior derecha estilo Poster -->
+      <div class="corner-drop-badge">
+        <div class="drop-year">20<br>26</div>
+        <div class="drop-divider"></div>
+        <div class="drop-text">NUEVO<br>LANZAMIENTO</div>
+      </div>
+
+      <!-- Etapas de Texto Dinámicas -->
+      <div class="hero-stage">
+        
+        <!-- Etapa 1: Portada Principal Editorial -->
+        <div class="stage-step active" id="step-1">
+          <div class="nike-editorial-block">
+            <span class="kicker-tag">COLECCIÓN NIKE SNEAKERS 2026</span>
+            <div class="script-accent">Air Force</div>
+            <h1 class="poster-headline">
+              NIKE DUNK<br>
+              <span class="sub-headline">EDICIÓN LIMITADA</span>
+            </h1>
+            <div class="concept-triplet">MINIMALISTA • LIMPIO • ICÓNICO</div>
+            <p class="poster-desc">
+              Calzado premium para cada ocasión. Diseño limpio y atemporal con impacto total.
+            </p>
+            <div class="btn-group">
+              <button class="nike-solid-btn">DESCUBRE EL FUTURO</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Etapa 2: Lateral / Chasis -->
+        <div class="stage-step" id="step-2">
+          <div class="nike-editorial-block right-align">
+            <span class="kicker-tag">INGENIERÍA CLÁSICA</span>
+            <div class="script-accent">Auténtico</div>
+            <h2 class="poster-headline">
+              CUERO PREMIUM<br>
+              <span class="sub-headline">COLECCIÓN AZUL RETRO</span>
+            </h2>
+            <div class="concept-triplet">DURABILIDAD • CONFORT • ESTILO</div>
+            <p class="poster-desc">
+              Capellada con costuras reforzadas originalmente diseñada para las canchas de baloncesto y llevada al estilo urbano supremo.
+            </p>
+          </div>
+        </div>
+
+        <!-- Etapa 3: Suela y Tracción -->
+        <div class="stage-step" id="step-3">
+          <div class="nike-editorial-block">
+            <span class="kicker-tag">RENDIMIENTO DE IMPACTO</span>
+            <div class="script-accent">Suela Air</div>
+            <h2 class="poster-headline">
+              TRACCIÓN TOTAL<br>
+              <span class="sub-headline">AMORTIGUACIÓN AIR-SOLE</span>
+            </h2>
+            <div class="concept-triplet">AGARRE • ESTABILIDAD • PIVOTE</div>
+            <p class="poster-desc">
+              Puntos de pivote circulares en la suela exterior para brindar tracción multidireccional inigualable.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Slogan estilo Sticker "Just do it." -->
+      <div class="just-do-it-badge">
+        <span>Just do it.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECCIÓN INFERIOR EDITORIAL: CATÁLOGO Y CARACTERÍSTICAS -->
+  <main class="page-content" id="sec-specs">
+    
+    <!-- Banner de 4 Pilares de Calidad estilo Aura -->
+    <div class="features-bar">
+      <div class="feature-col">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div>
+          <h4>CALIDAD PREMIUM</h4>
+          <p>Fabricado para perdurar</p>
+        </div>
+      </div>
+      <div class="feature-col">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+        </div>
+        <div>
+          <h4>ULTRA CONFORT</h4>
+          <p>Todo el día, cada día</p>
+        </div>
+      </div>
+      <div class="feature-col">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l4 6-10 13L2 9z"/></svg>
+        </div>
+        <div>
+          <h4>DISEÑO EN TENDENCIA</h4>
+          <p>Siempre a la vanguardia</p>
+        </div>
+      </div>
+      <div class="feature-col">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </div>
+        <div>
+          <h4>ENVÍOS GLOBALES</h4>
+          <p>Entregas directas a tu puerta</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Cierre / Call To Action -->
+    <section class="nike-cta-section" id="sec-cta">
+      <div class="cta-inner">
+        <span class="kicker-tag">LANZAMIENTO OFICIAL</span>
+        <h2 class="poster-headline large">
+          DA EL PASO AL FUTURO
+        </h2>
+        <p class="poster-desc centered">
+          El ícono renace con materiales sustentables y precisión de alta costura deportiva.
+        </p>
+        <div class="cta-actions-row">
+          <button class="nike-solid-btn large">COMPRAR COLECCIÓN 2026</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer Nike -->
+  <footer class="main-footer">
+    <div class="footer-brand">
+      <img src="img/nike.svg" alt="Nike" class="footer-icon-img" />
+      <p>© 2026 NIKE, INC. Todos los derechos reservados. Just do it.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
