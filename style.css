@@ -464,6 +464,162 @@ body {
   color: var(--text-secondary);
 }
 
+/* ========================================================
+   SECCIÓN SHOWCASE EDITORIAL: NIKE DUNK LOW x FRAGMENT
+   ======================================================== */
+.fragment-showcase-section {
+  max-width: 1300px;
+  margin: 0 auto 7rem auto;
+}
+
+.fragment-editorial-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  background: rgba(14, 18, 25, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  padding: 3.5rem;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.fragment-editorial-container.reverse-layout {
+  direction: rtl;
+}
+
+.fragment-editorial-container.reverse-layout > * {
+  direction: ltr;
+}
+
+.fragment-editorial-container.reverse-layout::before {
+  left: auto;
+  right: -10%;
+  background: radial-gradient(circle, rgba(41, 82, 128, 0.25) 0%, transparent 70%);
+}
+
+/* Card Visual de la Imagen */
+.fragment-visual-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.fragment-visual-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 60px rgba(41, 82, 128, 0.4);
+}
+
+.fragment-img-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #121822;
+}
+
+.fragment-feature-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fragment-visual-card:hover .fragment-feature-img {
+  transform: scale(1.04);
+}
+
+/* Card de Detalles */
+.fragment-details-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.fragment-header-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.fragment-huge-title {
+  font-family: var(--font-headline);
+  font-weight: 900;
+  font-size: clamp(3rem, 6vw, 4.8rem);
+  line-height: 0.9;
+  letter-spacing: -2px;
+  color: #fff;
+  margin-top: 0.25rem;
+}
+
+.blue-highlight {
+  color: #295280;
+  margin-left: 4px;
+}
+
+.fragment-manifesto {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.fragment-manifesto strong {
+  color: #fff;
+}
+
+.fragment-specs-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.f-spec-item {
+  display: flex;
+  gap: 0.85rem;
+}
+
+.f-spec-num {
+  font-family: var(--font-condensed);
+  font-size: 1.6rem;
+  color: var(--nike-accent);
+  line-height: 1;
+}
+
+.f-spec-item strong {
+  display: block;
+  font-size: 0.85rem;
+  color: #fff;
+  margin-bottom: 0.2rem;
+}
+
+.f-spec-item p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.fragment-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.stock-indicator {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #00f2fe;
+  letter-spacing: 0.5px;
+}
+
 /* Cierre / Call to Action */
 .nike-cta-section {
   text-align: center;
@@ -507,35 +663,138 @@ body {
 }
 
 /* Responsive */
+@media (max-width: 992px) {
+  .fragment-editorial-container {
+    grid-template-columns: 1fr;
+    padding: 2.25rem 1.75rem;
+    gap: 2.5rem;
+  }
+  
+  .fragment-specs-list {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
 @media (max-width: 768px) {
   .main-header {
-    padding: 1rem 1.5rem;
+    padding: 1rem 1.25rem;
   }
+
   .nav-links .nav-item {
     display: none;
   }
+
   .giant-bg-text {
-    font-size: 28vw;
-    right: -10vw;
+    font-size: 32vw;
+    right: -6vw;
+    top: 50%;
+    opacity: 0.6;
   }
+
   .corner-drop-badge {
-    display: none;
+    bottom: 2rem;
+    right: 1.5rem;
+    font-size: 0.7rem;
   }
+
+  .drop-divider {
+    height: 20px;
+  }
+
   .just-do-it-badge {
-    bottom: 1.5rem;
+    bottom: 2rem;
     left: 1.5rem;
+    font-size: 1.1rem;
+    padding: 0.3rem 1rem;
   }
+
+  /* Etapas de Texto Integradas Centradas */
   .hero-stage {
     padding: 0 1.5rem;
+    align-items: center;
   }
+
   .stage-step {
     left: 1.5rem;
     right: 1.5rem;
   }
-  .poster-headline {
-    font-size: 2.5rem;
+
+  .nike-editorial-block {
+    max-width: 100%;
   }
+
+  .kicker-tag {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.2rem;
+  }
+
   .script-accent {
+    font-size: 2.2rem;
+    margin-bottom: -0.4rem;
+  }
+
+  .poster-headline {
+    font-size: 2.2rem;
+    line-height: 0.95;
+    letter-spacing: -0.8px;
+    margin-bottom: 0.6rem;
+  }
+
+  .poster-headline .sub-headline {
+    font-size: 1.25rem;
+  }
+
+  .concept-triplet {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.8rem;
+  }
+
+  .poster-desc {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Fragment Section en Mobile */
+  .fragment-showcase-section {
+    margin-bottom: 4.5rem;
+  }
+
+  .fragment-editorial-container {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
+  .fragment-huge-title {
+    font-size: 2.75rem;
+  }
+
+  .fragment-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .fragment-cta-row .nike-solid-btn {
+    text-align: center;
+  }
+
+  /* Sección Inferior en Mobile */
+  .page-content {
+    padding: 4rem 1.25rem 6rem 1.25rem;
+  }
+
+  .features-bar {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    padding-bottom: 3.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .poster-headline.large {
     font-size: 2.2rem;
   }
 }
