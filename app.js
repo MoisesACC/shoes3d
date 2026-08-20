@@ -1,14 +1,24 @@
-/**
- * KINETIC AIR — High-Performance Scroll-Driven Canvas Controller
- * Standard: Vanilla JS (Pinned Hero Sequence + Natural Page Continuation)
- */
+const COLORWAYS = {
+  azul: {
+    name: 'Azul Royal',
+    accent: '#4388cc',
+    folder: './video-webp-azul'
+  },
+  marron: {
+    name: 'Marrón Vintage',
+    accent: '#9c6d48',
+    folder: './video-webp-marron'
+  }
+};
 
 const CONFIG = {
   frameCount: 100,
   lerpFactor: 0.12, // Suavizado LERP cinemático
-  framePath: (index) => {
+  currentColor: 'azul',
+  framePath: (index, colorKey = CONFIG.currentColor) => {
     const padded = String(index + 1).padStart(3, '0');
-    return `./video-webp/frame-${padded}.webp`;
+    const folder = COLORWAYS[colorKey] ? COLORWAYS[colorKey].folder : './video-webp';
+    return `${folder}/frame-${padded}.webp`;
   }
 };
 
@@ -17,6 +27,9 @@ class ScrollVideoSequence {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext('2d', { alpha: false, desynchronized: true });
     
+    // Almacenamiento en caché por color: { azul: [...], marron: [...] }
+    this.colorwayCaches = {};
+    this.currentColor = 'azul';
     this.images = new Array(CONFIG.frameCount);
     this.loadedCount = 0;
     this.lastValidImage = null;
@@ -39,14 +52,22 @@ class ScrollVideoSequence {
     this.loaderBar = document.getElementById('loader-bar');
     this.loaderProgress = document.getElementById('loader-progress');
 
+    // Elementos del selector de color
+    this.swatches = document.querySelectorAll('.color-swatch');
+    this.activeColorNameEl = document.getElementById('activeColorName');
+
     this.init();
   }
 
   async init() {
     this.handleResize();
     this.bindEvents();
-    await this.preloadImages();
+    this.initColorSelector();
+    await this.preloadImages(this.currentColor, true);
     this.startLoop();
+
+    // Precargar en segundo plano el color alternativo para cambio instantáneo
+    this.preloadAlternativeColors();
   }
 
   /**
@@ -68,10 +89,17 @@ class ScrollVideoSequence {
   };
 
   /**
-   * Preload Asíncrono de los 100 frames WebP
+   * Preload Asíncrono de los 100 frames WebP de un colorway
    */
-  preloadImages() {
+  preloadImages(colorKey, isInitial = false) {
+    if (this.colorwayCaches[colorKey]) {
+      this.images = this.colorwayCaches[colorKey];
+      return Promise.resolve();
+    }
+
     return new Promise((resolve) => {
+      const imgArray = new Array(CONFIG.frameCount);
+      let count = 0;
       let isFirstFrameReady = false;
 
       for (let index = 0; index < CONFIG.frameCount; index++) {
@@ -79,45 +107,129 @@ class ScrollVideoSequence {
         img.decoding = 'async';
 
         img.onload = () => {
-          this.images[index] = img;
-          this.loadedCount++;
+          imgArray[index] = img;
+          count++;
 
-          if (!isFirstFrameReady && index === 0) {
-            this.lastValidImage = img;
-            this.renderFrame(img);
-            isFirstFrameReady = true;
-          }
-
-          const percent = Math.round((this.loadedCount / CONFIG.frameCount) * 100);
-          if (this.loaderBar) this.loaderBar.style.width = `${percent}%`;
-          if (this.loaderProgress) this.loaderProgress.textContent = `${percent}%`;
-
-          // Liberar el loader al alcanzar al menos el 25% para interactividad inmediata
-          if (this.loadedCount >= Math.floor(CONFIG.frameCount * 0.25)) {
-            if (this.loader && !this.loader.classList.contains('loaded')) {
-              this.loader.classList.add('loaded');
+          if (isInitial) {
+            if (!isFirstFrameReady && index === 0) {
+              this.lastValidImage = img;
+              this.renderFrame(img);
+              isFirstFrameReady = true;
             }
-          }
 
-          if (this.loadedCount === CONFIG.frameCount) {
-            if (this.loader) this.loader.classList.add('loaded');
-            resolve();
+            const percent = Math.round((count / CONFIG.frameCount) * 100);
+            if (this.loaderBar) this.loaderBar.style.width = `${percent}%`;
+            if (this.loaderProgress) this.loaderProgress.textContent = `${percent}%`;
+
+            if (count >= Math.floor(CONFIG.frameCount * 0.25)) {
+              if (this.loader && !this.loader.classList.contains('loaded')) {
+                this.loader.classList.add('loaded');
+              }
+            }
+
+            if (count === CONFIG.frameCount) {
+              if (this.loader) this.loader.classList.add('loaded');
+              this.colorwayCaches[colorKey] = imgArray;
+              this.images = imgArray;
+              resolve();
+            }
+          } else {
+            if (count === CONFIG.frameCount) {
+              this.colorwayCaches[colorKey] = imgArray;
+              resolve();
+            }
           }
         };
 
         img.onerror = () => {
-          console.warn(`[FramePreload] Error al cargar frame índice: ${index}`);
-          this.images[index] = null;
-          this.loadedCount++;
-          if (this.loadedCount === CONFIG.frameCount) {
-            if (this.loader) this.loader.classList.add('loaded');
+          console.warn(`[FramePreload] Error al cargar frame índice: ${index} (${colorKey})`);
+          imgArray[index] = null;
+          count++;
+          if (count === CONFIG.frameCount) {
+            if (isInitial && this.loader) this.loader.classList.add('loaded');
+            this.colorwayCaches[colorKey] = imgArray;
             resolve();
           }
         };
 
-        img.src = CONFIG.framePath(index);
+        img.src = CONFIG.framePath(index, colorKey);
       }
     });
+  }
+
+  /**
+   * Precarga en segundo plano para transiciones instantáneas
+   */
+  preloadAlternativeColors() {
+    Object.keys(COLORWAYS).forEach((key) => {
+      if (key !== this.currentColor && !this.colorwayCaches[key]) {
+        this.preloadImages(key, false);
+      }
+    });
+  }
+
+  /**
+   * Selector interactivo de colorway
+   */
+  initColorSelector() {
+    if (!this.swatches || this.swatches.length === 0) return;
+
+    this.swatches.forEach((swatch) => {
+      swatch.addEventListener('click', () => {
+        const color = swatch.dataset.color;
+        if (!color || color === this.currentColor) return;
+
+        this.switchColor(color);
+      });
+    });
+  }
+
+  /**
+   * Cambia la secuencia de frames de forma fluida
+   */
+  async switchColor(colorKey) {
+    if (!COLORWAYS[colorKey]) return;
+
+    this.currentColor = colorKey;
+    CONFIG.currentColor = colorKey;
+
+    // Actualizar botones UI
+    this.swatches.forEach((s) => {
+      if (s.dataset.color === colorKey) {
+        s.classList.add('active');
+      } else {
+        s.classList.remove('active');
+      }
+    });
+
+    if (this.activeColorNameEl && COLORWAYS[colorKey]) {
+      this.activeColorNameEl.textContent = COLORWAYS[colorKey].name;
+    }
+
+    // Actualizar variable CSS de acento
+    if (COLORWAYS[colorKey].accent) {
+      document.documentElement.style.setProperty('--nike-accent', COLORWAYS[colorKey].accent);
+    }
+
+    // Si ya está en caché, cambio inmediato
+    if (this.colorwayCaches[colorKey]) {
+      this.images = this.colorwayCaches[colorKey];
+      const frameIndex = Math.min(CONFIG.frameCount - 1, Math.max(0, Math.round(this.currentFrame)));
+      const newImg = this.images[frameIndex] || this.images[0];
+      if (newImg) {
+        this.lastValidImage = newImg;
+        this.renderFrame(newImg);
+      }
+    } else {
+      await this.preloadImages(colorKey, false);
+      this.images = this.colorwayCaches[colorKey];
+      const frameIndex = Math.min(CONFIG.frameCount - 1, Math.max(0, Math.round(this.currentFrame)));
+      const newImg = this.images[frameIndex] || this.images[0];
+      if (newImg) {
+        this.lastValidImage = newImg;
+        this.renderFrame(newImg);
+      }
+    }
   }
 
   /**
