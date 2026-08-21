@@ -8,6 +8,11 @@ const COLORWAYS = {
     name: 'Marrón Vintage',
     accent: '#9c6d48',
     folder: './video-webp-marron'
+  },
+  chicle: {
+    name: 'Rosa Chicle',
+    accent: '#e26d9c',
+    folder: './video-webp-chicle'
   }
 };
 
