@@ -13,6 +13,11 @@ const COLORWAYS = {
     name: 'Rosa Chicle',
     accent: '#e26d9c',
     folder: './video-webp-chicle'
+  },
+  negro: {
+    name: 'Negro Onix',
+    accent: '#888888',
+    folder: './video-webp-negro'
   }
 };
 
@@ -22,7 +27,7 @@ const CONFIG = {
   currentColor: 'azul',
   framePath: (index, colorKey = CONFIG.currentColor) => {
     const padded = String(index + 1).padStart(3, '0');
-    const folder = COLORWAYS[colorKey] ? COLORWAYS[colorKey].folder : './video-webp';
+    const folder = COLORWAYS[colorKey] ? COLORWAYS[colorKey].folder : './video-webp-azul';
     return `${folder}/frame-${padded}.webp`;
   }
 };
