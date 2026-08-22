@@ -66,7 +66,8 @@ body {
   width: 44px;
   height: auto;
   display: block;
-  filter: brightness(0) invert(1); /* Convierte el SVG negro a blanco puro */
+  filter: brightness(0) invert(1);
+  /* Convierte el SVG negro a blanco puro */
 }
 
 .logo-text {
@@ -149,8 +150,17 @@ body {
 }
 
 @keyframes pulse-swoosh {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.1); opacity: 1; }
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
 }
 
 .loader-progress-track {
@@ -383,6 +393,7 @@ body {
     padding: 0.5rem 1rem;
     gap: 0.75rem;
   }
+
   .active-color-name {
     display: none;
   }
@@ -594,7 +605,7 @@ body {
   direction: rtl;
 }
 
-.fragment-editorial-container.reverse-layout > * {
+.fragment-editorial-container.reverse-layout>* {
   direction: ltr;
 }
 
@@ -773,7 +784,7 @@ body {
     padding: 2.25rem 1.75rem;
     gap: 2.5rem;
   }
-  
+
   .fragment-specs-list {
     grid-template-columns: 1fr;
     gap: 1.25rem;
@@ -900,5 +911,352 @@ body {
 
   .poster-headline.large {
     font-size: 2.2rem;
+  }
+}
+
+/* ========================================================
+   SECCIÓN STUDIO STAGE (ILUMINACIÓN DUAL Y PERSPECTIVA 3D)
+   Inspirada en el set de estudio profesional con contraste rojo/cian
+   ======================================================== */
+.studio-cinematic-section {
+  width: 100%;
+  max-width: 1420px;
+  margin: 0 auto 7rem auto;
+  padding: 0 1rem;
+}
+
+.studio-lighting-stage {
+  position: relative;
+  width: 100%;
+  min-height: 640px;
+  border-radius: 32px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 120%, #151a24 0%, #090b0f 100%);
+  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4rem 3.5rem 3.5rem 3.5rem;
+}
+
+/* Luces Ambientales de Estudio (Cian a la izquierda, Rojo/Magenta a la derecha) */
+.studio-ambient-glow {
+  position: absolute;
+  top: 0;
+  width: 55%;
+  height: 100%;
+  pointer-events: none;
+  filter: blur(85px);
+  opacity: 0.55;
+  transition: opacity 0.6s ease;
+  z-index: 1;
+}
+
+.glow-cyan {
+  left: -10%;
+  background: radial-gradient(circle at 20% 30%, #00b4d8 0%, rgba(0, 180, 216, 0.15) 55%, transparent 75%);
+}
+
+.glow-red {
+  right: -10%;
+  background: radial-gradient(circle at 80% 30%, #e63946 0%, rgba(230, 57, 70, 0.18) 55%, transparent 75%);
+}
+
+/* Piso con Reflejo y Degradado de Estudio */
+.studio-floor-reflection {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 48%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0.4) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Fila de Zapatillas en Perspectiva Cinemática Centrada */
+.studio-shoes-row {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  align-items: flex-end;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  perspective: 1000px;
+}
+
+/* Cada Pod de Zapatilla */
+.studio-shoe-pod {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 320px;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+
+/* ========================================================
+   👉 TAMAÑO EN ESCRITORIO (DESKTOP) - PUEDES AJUSTAR AQUÍ
+   ======================================================== */
+.studio-shoe-inner {
+  position: relative;
+  /* Ancho y alto de la caja contenedora en PC */
+  width: 100%;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Imagen de Zapatilla en PC */
+.studio-shoe-asset {
+  width: 100%;
+  height: auto;
+  /* Altura máxima de la zapatilla en PC (Aumenta o reduce este valor para cambiar tamaño) */
+  max-height: 280px;
+  object-fit: contain;
+  transform: rotate(-18deg) translateY(0);
+  filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.55));
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+  will-change: transform;
+}
+
+/* Sombra de Apoyo en el Suelo del Estudio Centrada */
+.studio-cast-shadow {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  width: 240px;
+  height: 22px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 70%);
+  border-radius: 50%;
+  filter: blur(6px);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+/* Labels de Identificación */
+.studio-shoe-label {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 1rem;
+  padding: 0.45rem 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.35s ease;
+}
+
+.label-code {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--nike-accent);
+  letter-spacing: 1px;
+}
+
+.label-name {
+  font-family: var(--font-headline);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+}
+
+/* Interacción Hover y Activo */
+.studio-shoe-pod:hover,
+.studio-shoe-pod.active {
+  transform: translateY(-10px);
+}
+
+.studio-shoe-pod:hover .studio-shoe-asset,
+.studio-shoe-pod.active .studio-shoe-asset {
+  transform: rotate(-24deg) translateY(-20px) scale(1.14);
+  filter: drop-shadow(0 32px 38px rgba(0, 0, 0, 0.75)) brightness(1.1);
+}
+
+.studio-shoe-pod:hover .studio-cast-shadow,
+.studio-shoe-pod.active .studio-cast-shadow {
+  transform: translateX(-50%) scale(1.25);
+  opacity: 0.9;
+}
+
+.studio-shoe-pod:hover .studio-shoe-label,
+.studio-shoe-pod.active .studio-shoe-label {
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+.studio-shoe-pod:hover .label-name,
+.studio-shoe-pod.active .label-name {
+  color: #0f1319;
+}
+
+.studio-shoe-pod:hover .label-code,
+.studio-shoe-pod.active .label-code {
+  color: #000;
+}
+
+/* Indicadores Dots para Móvil */
+.studio-mobile-dots {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  z-index: 5;
+}
+
+.studio-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.studio-dot.active {
+  width: 24px;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+/* Bloque Tipográfico Inferior Minimalista */
+.studio-caption-block {
+  position: relative;
+  z-index: 5;
+  margin-top: 3.5rem;
+  max-width: 650px;
+}
+
+.studio-brand-mark {
+  font-family: var(--font-headline);
+  font-size: 2rem;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  margin-bottom: 0.2rem;
+}
+
+.studio-model-title {
+  font-family: var(--font-headline);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 0.6rem;
+}
+
+.studio-model-desc {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Responsividad para Tablets */
+@media (max-width: 1150px) {
+  .studio-shoe-inner {
+    width: 260px;
+    height: 230px;
+  }
+
+  .studio-shoe-asset {
+    max-height: 190px;
+  }
+}
+
+/* ========================================================
+   👉 TAMAÑO EN MODO MÓVIL (MOBILE) - PUEDES AJUSTAR AQUÍ
+   ======================================================== */
+@media (max-width: 768px) {
+  .studio-lighting-stage {
+    padding: 3rem 1.25rem 2.5rem 1.25rem;
+    min-height: auto;
+    border-radius: 24px;
+  }
+
+  .studio-shoes-row {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 1rem 0;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .studio-shoes-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Cada card ocupa el 100% exacto para ver solo 1 zapatilla */
+  .studio-shoe-pod {
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Contenedor de la Zapatilla en Móvil */
+  .studio-shoe-inner {
+    width: 100%;
+    max-width: 380px;
+    height: 290px;
+  }
+
+  /* Imagen de Zapatilla en Móvil (Aumenta o reduce max-height / width para cambiar tamaño) */
+  .studio-shoe-asset {
+    width: 95%;
+    max-height: 260px;
+    transform: rotate(-18deg) translateY(0) scale(1.1);
+  }
+
+  .studio-cast-shadow {
+    width: 270px;
+    height: 24px;
+    bottom: 5px;
+  }
+
+  .studio-mobile-dots {
+    display: flex;
+  }
+
+  .studio-caption-block {
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .studio-brand-mark {
+    font-size: 1.7rem;
+  }
+
+  .studio-model-title {
+    font-size: 1rem;
+  }
+
+  .studio-model-desc {
+    font-size: 0.85rem;
   }
 }

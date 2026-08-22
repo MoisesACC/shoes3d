@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NIKE AIR DUNK RETRO — Colección 2026</title>
-  <meta name="description" content="Edición limitada Nike Dunk Retro 2026. Minimalista, limpio, icónico. Experiencia interactiva basada en scroll." />
-  
+  <meta name="description"
+    content="Edición limitada Nike Dunk Retro 2026. Minimalista, limpio, icónico. Experiencia interactiva basada en scroll." />
+
   <!-- Metadatos SEO y Open Graph (Social Media & Sharing) -->
   <link rel="canonical" href="https://shoes3d.vercel.app/" />
-  
+
   <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://shoes3d.vercel.app/" />
   <meta property="og:title" content="NIKE AIR DUNK RETRO — Colección 2026" />
-  <meta property="og:description" content="Edición limitada Nike Dunk Retro 2026. Minimalista, limpio, icónico. Experiencia interactiva basada en scroll." />
+  <meta property="og:description"
+    content="Edición limitada Nike Dunk Retro 2026. Minimalista, limpio, icónico. Experiencia interactiva basada en scroll." />
   <meta property="og:image" content="https://shoes3d.vercel.app/img/banner_shoes.jpg" />
   <meta property="og:image:secure_url" content="https://shoes3d.vercel.app/img/banner_shoes.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
@@ -27,20 +30,27 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="https://shoes3d.vercel.app/" />
   <meta name="twitter:title" content="NIKE AIR DUNK RETRO — Colección 2026" />
-  <meta name="twitter:description" content="Edición limitada Nike Dunk Retro 2026. Minimalista, limpio, icónico. Experiencia interactiva basada en scroll." />
+  <meta name="twitter:description"
+    content="Edición limitada Nike Dunk Retro 2026. Minimalista, limpio, icónico. Experiencia interactiva basada en scroll." />
   <meta name="twitter:image" content="https://shoes3d.vercel.app/img/banner_shoes.jpg" />
   <meta name="twitter:image:alt" content="Nike Air Dunk Retro 2026" />
 
   <!-- Tipografías Oficiales de Estilo Nike: Bebas Neue / Montserrat Black / Caveat / Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:ital,wght@0,800;0,900;1,900&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:ital,wght@0,800;0,900;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Preload del primer frame crítico para First Contentful Paint inmediato -->
+  <link rel="preload" as="image" href="./video-webp-azul/frame-001.webp" type="image/webp" fetchpriority="high" />
+
   <link rel="stylesheet" href="style.css" />
-  
+
   <!-- link icon -->
   <link rel="icon" type="image/png" href="img/nike.svg" />
 </head>
+
 <body>
 
   <!-- Barra de Navegación Nike Minimalista -->
@@ -78,13 +88,13 @@
   <!-- SECCIÓN HERO INTERACTIVA CON SECUENCIA PINNED/STICKY -->
   <div class="hero-scroll-wrapper" id="heroScrollWrapper">
     <div class="sticky-viewport">
-      
+
       <!-- Letras Gigantes de Fondo Tipográfico estilo Póster Poster/Aura -->
       <div class="giant-bg-text">NIKE</div>
 
       <!-- Canvas de los 100 Frames WebP -->
       <canvas id="frameCanvas"></canvas>
-      
+
       <!-- Overlay Cinemático Gradiente Suave -->
       <div class="cinematic-overlay"></div>
 
@@ -97,7 +107,7 @@
 
       <!-- Etapas de Texto Dinámicas -->
       <div class="hero-stage">
-        
+
         <!-- Etapa 1: Portada Principal Editorial -->
         <div class="stage-step active" id="step-1">
           <div class="nike-editorial-block">
@@ -128,7 +138,8 @@
             </h2>
             <div class="concept-triplet">DURABILIDAD • CONFORT • ESTILO</div>
             <p class="poster-desc">
-              Capellada con costuras reforzadas originalmente diseñada para las canchas de baloncesto y llevada al estilo urbano supremo.
+              Capellada con costuras reforzadas originalmente diseñada para las canchas de baloncesto y llevada al
+              estilo urbano supremo.
             </p>
           </div>
         </div>
@@ -155,16 +166,20 @@
       <div class="color-palette-widget" id="colorSelector">
         <span class="color-palette-label">COLORWAY</span>
         <div class="color-options-group">
-          <button class="color-swatch active" data-color="azul" data-accent="#4388cc" data-name="Azul Royal" title="Azul Royal">
+          <button class="color-swatch active" data-color="azul" data-accent="#4388cc" data-name="Azul Royal"
+            title="Azul Royal">
             <span class="swatch-inner" style="background: #205493;"></span>
           </button>
-          <button class="color-swatch" data-color="marron" data-accent="#9c6d48" data-name="Marrón Vintage" title="Marrón Vintage">
+          <button class="color-swatch" data-color="marron" data-accent="#9c6d48" data-name="Marrón Vintage"
+            title="Marrón Vintage">
             <span class="swatch-inner" style="background: #6e472a;"></span>
           </button>
-          <button class="color-swatch" data-color="chicle" data-accent="#e26d9c" data-name="Rosa Chicle" title="Rosa Chicle">
+          <button class="color-swatch" data-color="chicle" data-accent="#e26d9c" data-name="Rosa Chicle"
+            title="Rosa Chicle">
             <span class="swatch-inner" style="background: #e26d9c;"></span>
           </button>
-          <button class="color-swatch" data-color="negro" data-accent="#888888" data-name="Negro Onix" title="Negro Onix">
+          <button class="color-swatch" data-color="negro" data-accent="#888888" data-name="Negro Onix"
+            title="Negro Onix">
             <span class="swatch-inner" style="background: #18181b;"></span>
           </button>
         </div>
@@ -181,12 +196,14 @@
 
   <!-- SECCIÓN INFERIOR EDITORIAL: CATÁLOGO Y CARACTERÍSTICAS -->
   <main class="page-content" id="sec-specs">
-    
+
     <!-- Banner de 4 Pilares de Calidad estilo Aura -->
     <div class="features-bar">
       <div class="feature-col">
         <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
         </div>
         <div>
           <h4>CALIDAD PREMIUM</h4>
@@ -195,7 +212,9 @@
       </div>
       <div class="feature-col">
         <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+          </svg>
         </div>
         <div>
           <h4>ULTRA CONFORT</h4>
@@ -204,7 +223,9 @@
       </div>
       <div class="feature-col">
         <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l4 6-10 13L2 9z"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 3h12l4 6-10 13L2 9z" />
+          </svg>
         </div>
         <div>
           <h4>DISEÑO EN TENDENCIA</h4>
@@ -213,7 +234,11 @@
       </div>
       <div class="feature-col">
         <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+            <path d="M2 12h20" />
+          </svg>
         </div>
         <div>
           <h4>ENVÍOS GLOBALES</h4>
@@ -222,10 +247,92 @@
       </div>
     </div>
 
+    <!-- SECCIÓN CINEMÁTICA STUDIO STAGE (INSPIRADA EN LA REFERENCIA CON ILUMINACIÓN DUAL Y PERSPECTIVA) -->
+    <section class="studio-cinematic-section" id="sec-studio">
+      <div class="studio-lighting-stage">
+        
+        <!-- Iluminación Ambiental de Estudio (Dual Glow Cian a Rojo/Magenta) -->
+        <div class="studio-ambient-glow glow-cyan"></div>
+        <div class="studio-ambient-glow glow-red"></div>
+        <div class="studio-floor-reflection"></div>
+
+        <!-- Contenedor de las Siluetas en Perspectiva Cinemática -->
+        <div class="studio-shoes-row" id="studioShoesRow">
+          
+          <!-- Zapatilla 1: Royal Blue / Cyan Glow -->
+          <div class="studio-shoe-pod" data-model="Royal Blue" data-accent="#00d2ff">
+            <div class="studio-shoe-inner">
+              <img src="img/shoes_azul.png" alt="Nike Dunk Low Royal Blue" class="studio-shoe-asset" />
+              <div class="studio-cast-shadow"></div>
+            </div>
+            <div class="studio-shoe-label">
+              <span class="label-code">01</span>
+              <span class="label-name">ROYAL COBALT</span>
+            </div>
+          </div>
+
+          <!-- Zapatilla 2: Sunset Peach / Warm Glow -->
+          <div class="studio-shoe-pod active" data-model="Sunset Peach" data-accent="#ff6b4a">
+            <div class="studio-shoe-inner">
+              <img src="img/shoes_pink.png" alt="Nike Dunk Low Sunset Peach" class="studio-shoe-asset" />
+              <div class="studio-cast-shadow"></div>
+            </div>
+            <div class="studio-shoe-label">
+              <span class="label-code">02</span>
+              <span class="label-name">SUNSET PEACH</span>
+            </div>
+          </div>
+
+          <!-- Zapatilla 3: Berry Rose / Crimson Glow -->
+          <div class="studio-shoe-pod" data-model="Berry Rose" data-accent="#e63946">
+            <div class="studio-shoe-inner">
+              <img src="img/shoes_rosado_oscuro.png" alt="Nike Dunk Low Berry Rose" class="studio-shoe-asset" />
+              <div class="studio-cast-shadow"></div>
+            </div>
+            <div class="studio-shoe-label">
+              <span class="label-code">03</span>
+              <span class="label-name">BERRY CRIMSON</span>
+            </div>
+          </div>
+
+          <!-- Zapatilla 4: Vintage Mocha / Earth Glow -->
+          <div class="studio-shoe-pod" data-model="Vintage Mocha" data-accent="#c89666">
+            <div class="studio-shoe-inner">
+              <img src="img/shoes_marron.png" alt="Nike Dunk Low Vintage Mocha" class="studio-shoe-asset" />
+              <div class="studio-cast-shadow"></div>
+            </div>
+            <div class="studio-shoe-label">
+              <span class="label-code">04</span>
+              <span class="label-name">VINTAGE MOCHA</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Indicadores de deslizamiento para móvil (Paginación 1 por 1) -->
+        <div class="studio-mobile-dots" id="studioMobileDots">
+          <span class="studio-dot active" data-index="0"></span>
+          <span class="studio-dot" data-index="1"></span>
+          <span class="studio-dot" data-index="2"></span>
+          <span class="studio-dot" data-index="3"></span>
+        </div>
+
+        <!-- Información Tipográfica Editorial Minimalista en la base (Como la referencia) -->
+        <div class="studio-caption-block">
+          <div class="studio-brand-mark">NIKE</div>
+          <h3 class="studio-model-title">AIR DUNK LOW • ULTRA RETRO</h3>
+          <p class="studio-model-desc">
+            Una alineación icónica desarrollada con precisión ergonómica y contrastes cromáticos de alto impacto. Diseñada para dominar tanto el asfalto como la pasarela contemporánea.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
     <!-- Sección Editorial Nike Dunk Low x Fragment (Inspirada en el Poster de la Imagen) -->
     <section class="fragment-showcase-section" id="sec-fragment">
       <div class="fragment-editorial-container">
-        
+
         <div class="fragment-visual-card">
           <div class="fragment-img-wrapper">
             <img src="img/img_shoes2.jpg" alt="Nike Dunk Low Collection Fragment" class="fragment-feature-img" />
@@ -238,9 +345,12 @@
             <div class="script-accent">Edición Especial</div>
             <h2 class="fragment-huge-title">DUNK<span class="blue-highlight">LOW</span></h2>
           </div>
-          
+
           <p class="fragment-manifesto">
-            Para los que valoran el estilo puro. Esta edición de <strong>Nike Dunk Low</strong> en azul cobalto y blanco nítido une la herencia de la cancha con la sofisticación moderna. Un diseño atemporal para elevar tu juego, tanto en la pista como en la calle. Parte de la colección exclusiva Nike Fragment: la pureza del diseño y el impacto del color.
+            Para los que valoran el estilo puro. Esta edición de <strong>Nike Dunk Low</strong> en azul cobalto y blanco
+            nítido une la herencia de la cancha con la sofisticación moderna. Un diseño atemporal para elevar tu juego,
+            tanto en la pista como en la calle. Parte de la colección exclusiva Nike Fragment: la pureza del diseño y el
+            impacto del color.
           </p>
 
           <div class="fragment-specs-list">
@@ -272,7 +382,7 @@
     <!-- Sección Editorial 2 (Invertida): Nike Dunk Low Retro Heritage -->
     <section class="fragment-showcase-section" id="sec-heritage">
       <div class="fragment-editorial-container reverse-layout">
-        
+
         <div class="fragment-visual-card">
           <div class="fragment-img-wrapper">
             <img src="img/img_shoes3.jpg" alt="Nike Dunk Low Retro Heritage Edition" class="fragment-feature-img" />
@@ -285,9 +395,11 @@
             <div class="script-accent">Auténtico</div>
             <h2 class="fragment-huge-title">ICONIC<span class="blue-highlight">RETRO</span></h2>
           </div>
-          
+
           <p class="fragment-manifesto">
-            Inspirada en el básquetbol universitario de los años 80, la silueta <strong>Retro Heritage</strong> redefine la cultura sneaker actual con acolchado de cuello bajo para mayor libertad de movimiento y una estética pulida que trasciende generaciones.
+            Inspirada en el básquetbol universitario de los años 80, la silueta <strong>Retro Heritage</strong> redefine
+            la cultura sneaker actual con acolchado de cuello bajo para mayor libertad de movimiento y una estética
+            pulida que trasciende generaciones.
           </p>
 
           <div class="fragment-specs-list">
@@ -344,4 +456,5 @@
 
   <script src="app.js"></script>
 </body>
+
 </html>

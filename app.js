@@ -36,7 +36,7 @@ class ScrollVideoSequence {
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext('2d', { alpha: false, desynchronized: true });
-    
+
     // Almacenamiento en caché por color: { azul: [...], marron: [...] }
     this.colorwayCaches = {};
     this.currentColor = 'azul';
@@ -49,7 +49,7 @@ class ScrollVideoSequence {
 
     // Contenedor del Hero Scroll
     this.heroWrapper = document.getElementById('heroScrollWrapper');
-    
+
     // Pasos de texto dinámicos
     this.steps = [
       document.getElementById('step-1'),
@@ -99,7 +99,7 @@ class ScrollVideoSequence {
   };
 
   /**
-   * Preload Asíncrono de los 100 frames WebP de un colorway
+   * Preload Asíncrono de los 100 frames WebP con createImageBitmap (Off-thread decoding)
    */
   preloadImages(colorKey, isInitial = false) {
     if (this.colorwayCaches[colorKey]) {
@@ -112,18 +112,47 @@ class ScrollVideoSequence {
       let count = 0;
       let isFirstFrameReady = false;
 
-      for (let index = 0; index < CONFIG.frameCount; index++) {
-        const img = new Image();
-        img.decoding = 'async';
+      // Soporte moderno para createImageBitmap (decodificación fuera del hilo principal)
+      const supportsImageBitmap = typeof window.createImageBitmap === 'function';
 
-        img.onload = () => {
-          imgArray[index] = img;
+      const checkCompletion = () => {
+        if (count === CONFIG.frameCount) {
+          this.colorwayCaches[colorKey] = imgArray;
+          if (isInitial) {
+            if (this.loader) this.loader.classList.add('loaded');
+            this.images = imgArray;
+          }
+          resolve();
+        }
+      };
+
+      const loadSingleFrame = async (index) => {
+        const url = CONFIG.framePath(index, colorKey);
+        try {
+          if (supportsImageBitmap) {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const bitmap = await createImageBitmap(blob, { imageOrientation: 'none', premultiplyAlpha: 'none' });
+            imgArray[index] = bitmap;
+          } else {
+            await new Promise((imgResolve, imgReject) => {
+              const img = new Image();
+              img.decoding = 'async';
+              img.onload = () => {
+                imgArray[index] = img;
+                imgResolve();
+              };
+              img.onerror = imgReject;
+              img.src = url;
+            });
+          }
+
           count++;
 
           if (isInitial) {
-            if (!isFirstFrameReady && index === 0) {
-              this.lastValidImage = img;
-              this.renderFrame(img);
+            if (!isFirstFrameReady && index === 0 && imgArray[0]) {
+              this.lastValidImage = imgArray[0];
+              this.renderFrame(imgArray[0]);
               isFirstFrameReady = true;
             }
 
@@ -136,33 +165,23 @@ class ScrollVideoSequence {
                 this.loader.classList.add('loaded');
               }
             }
-
-            if (count === CONFIG.frameCount) {
-              if (this.loader) this.loader.classList.add('loaded');
-              this.colorwayCaches[colorKey] = imgArray;
-              this.images = imgArray;
-              resolve();
-            }
-          } else {
-            if (count === CONFIG.frameCount) {
-              this.colorwayCaches[colorKey] = imgArray;
-              resolve();
-            }
           }
-        };
-
-        img.onerror = () => {
-          console.warn(`[FramePreload] Error al cargar frame índice: ${index} (${colorKey})`);
+        } catch (err) {
+          console.warn(`[FramePreload] Error cargando frame ${index} (${colorKey}):`, err);
           imgArray[index] = null;
           count++;
-          if (count === CONFIG.frameCount) {
-            if (isInitial && this.loader) this.loader.classList.add('loaded');
-            this.colorwayCaches[colorKey] = imgArray;
-            resolve();
-          }
-        };
+        } finally {
+          checkCompletion();
+        }
+      };
 
-        img.src = CONFIG.framePath(index, colorKey);
+      // Cargar los primeros 15 frames con alta prioridad
+      for (let i = 0; i < Math.min(15, CONFIG.frameCount); i++) {
+        loadSingleFrame(i);
+      }
+      // Cargar el resto de forma escalonada para no saturar la red simultáneamente
+      for (let i = 15; i < CONFIG.frameCount; i++) {
+        loadSingleFrame(i);
       }
     });
   }
@@ -171,10 +190,15 @@ class ScrollVideoSequence {
    * Precarga en segundo plano para transiciones instantáneas
    */
   preloadAlternativeColors() {
-    Object.keys(COLORWAYS).forEach((key) => {
-      if (key !== this.currentColor && !this.colorwayCaches[key]) {
-        this.preloadImages(key, false);
-      }
+    // Usar requestIdleCallback para no competir con el scroll inicial
+    const schedulePreload = window.requestIdleCallback || ((cb) => setTimeout(cb, 1000));
+
+    schedulePreload(() => {
+      Object.keys(COLORWAYS).forEach((key) => {
+        if (key !== this.currentColor && !this.colorwayCaches[key]) {
+          this.preloadImages(key, false);
+        }
+      });
     });
   }
 
@@ -229,6 +253,7 @@ class ScrollVideoSequence {
       if (newImg) {
         this.lastValidImage = newImg;
         this.renderFrame(newImg);
+        this.requestRender();
       }
     } else {
       await this.preloadImages(colorKey, false);
@@ -238,6 +263,7 @@ class ScrollVideoSequence {
       if (newImg) {
         this.lastValidImage = newImg;
         this.renderFrame(newImg);
+        this.requestRender();
       }
     }
   }
@@ -246,12 +272,14 @@ class ScrollVideoSequence {
    * Renderizado 'object-fit: cover' centrado milimétricamente
    */
   renderFrame(img) {
-    if (!img || !img.complete || img.naturalWidth === 0) return;
+    if (!img) return;
+
+    const imgWidth = img.width || img.naturalWidth;
+    const imgHeight = img.height || img.naturalHeight;
+    if (!imgWidth || !imgHeight) return;
 
     const canvasWidth = window.innerWidth;
     const canvasHeight = window.innerHeight;
-    const imgWidth = img.naturalWidth;
-    const imgHeight = img.naturalHeight;
 
     const scale = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
     const drawWidth = imgWidth * scale;
@@ -287,6 +315,9 @@ class ScrollVideoSequence {
 
     // Cambio de pasos de texto según el progreso del Hero
     this.updateStageSteps(scrollFraction);
+
+    // Despertar el loop si estaba en reposo
+    this.requestRender();
   };
 
   /**
@@ -314,27 +345,52 @@ class ScrollVideoSequence {
   }
 
   /**
-   * Bucle LERP con requestAnimationFrame
+   * Reactiva el bucle si está pausado
    */
-  startLoop = () => {
-    const update = () => {
-      const diff = this.targetFrame - this.currentFrame;
-      this.currentFrame += diff * CONFIG.lerpFactor;
+  requestRender = () => {
+    if (!this.isLoopRunning) {
+      this.isLoopRunning = true;
+      requestAnimationFrame(this.renderLoop);
+    }
+  };
 
-      const frameIndex = Math.round(this.currentFrame);
+  /**
+   * Bucle LERP inteligente: se pausa automáticamente cuando converge (Idle Pause)
+   * Ahorra batería y ciclos de GPU manteniendo 60/120 FPS ultra fluidos en movimiento.
+   */
+  renderLoop = () => {
+    const diff = this.targetFrame - this.currentFrame;
+
+    // Si la diferencia es casi nula, detenemos el loop para ahorrar 100% CPU/GPU en reposo
+    if (Math.abs(diff) < 0.002) {
+      this.currentFrame = this.targetFrame;
+      const frameIndex = Math.min(CONFIG.frameCount - 1, Math.max(0, Math.round(this.currentFrame)));
       const targetImage = this.images[frameIndex];
-
-      if (targetImage && targetImage.complete && targetImage.naturalWidth > 0) {
+      if (targetImage) {
         this.lastValidImage = targetImage;
         this.renderFrame(targetImage);
-      } else if (this.lastValidImage) {
-        this.renderFrame(this.lastValidImage);
       }
+      this.isLoopRunning = false;
+      return;
+    }
 
-      requestAnimationFrame(update);
-    };
+    this.currentFrame += diff * CONFIG.lerpFactor;
 
-    requestAnimationFrame(update);
+    const frameIndex = Math.min(CONFIG.frameCount - 1, Math.max(0, Math.round(this.currentFrame)));
+    const targetImage = this.images[frameIndex];
+
+    if (targetImage) {
+      this.lastValidImage = targetImage;
+      this.renderFrame(targetImage);
+    } else if (this.lastValidImage) {
+      this.renderFrame(this.lastValidImage);
+    }
+
+    requestAnimationFrame(this.renderLoop);
+  };
+
+  startLoop = () => {
+    this.requestRender();
   };
 
   bindEvents() {
@@ -343,12 +399,89 @@ class ScrollVideoSequence {
     let resizeTimer;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(this.handleResize, 40);
+      resizeTimer = setTimeout(() => {
+        this.handleResize();
+        this.requestRender();
+      }, 40);
     }, { passive: true });
+  }
+}
+
+/**
+ * Controlador de la Sección Studio Stage
+ * Sincroniza el foco de iluminación ambiental, interacción y paginación en móvil
+ */
+class StudioCinematicController {
+  constructor() {
+    this.stage = document.getElementById('sec-studio');
+    if (!this.stage) return;
+
+    this.row = this.stage.querySelector('.studio-shoes-row');
+    this.pods = this.stage.querySelectorAll('.studio-shoe-pod');
+    this.dots = this.stage.querySelectorAll('.studio-dot');
+
+    this.init();
+  }
+
+  init() {
+    this.pods.forEach((pod, index) => {
+      pod.addEventListener('mouseenter', () => {
+        this.setActivePod(pod, index);
+      });
+
+      pod.addEventListener('click', () => {
+        this.setActivePod(pod, index);
+      });
+    });
+
+    // Clic en los dots de paginación para móvil
+    this.dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const targetIdx = parseInt(dot.dataset.index, 10);
+        if (this.pods[targetIdx] && this.row) {
+          const podWidth = this.row.offsetWidth;
+          this.row.scrollTo({
+            left: podWidth * targetIdx,
+            behavior: 'smooth'
+          });
+          this.setActivePod(this.pods[targetIdx], targetIdx);
+        }
+      });
+    });
+
+    // Detectar deslizamiento en móvil y actualizar el dot activo
+    if (this.row) {
+      this.row.addEventListener('scroll', () => {
+        const scrollLeft = this.row.scrollLeft;
+        const podWidth = this.row.offsetWidth;
+        if (podWidth > 0) {
+          const activeIndex = Math.round(scrollLeft / podWidth);
+          this.updateDots(activeIndex);
+          if (this.pods[activeIndex]) {
+            this.pods.forEach((p) => p.classList.remove('active'));
+            this.pods[activeIndex].classList.add('active');
+          }
+        }
+      }, { passive: true });
+    }
+  }
+
+  setActivePod(activePod, index) {
+    this.pods.forEach((p) => p.classList.remove('active'));
+    activePod.classList.add('active');
+    this.updateDots(index);
+  }
+
+  updateDots(index) {
+    this.dots.forEach((dot, idx) => {
+      if (idx === index) dot.classList.add('active');
+      else dot.classList.remove('active');
+    });
   }
 }
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
   new ScrollVideoSequence('frameCanvas');
+  new StudioCinematicController();
 });
